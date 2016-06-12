@@ -14,7 +14,6 @@ import com.tomaskostadinov.instantmail.R;
  * Created by Tomas on 11.06.2016
  */
 
-
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService{
 
     @Override

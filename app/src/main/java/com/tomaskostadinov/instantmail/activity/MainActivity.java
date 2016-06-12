@@ -1,10 +1,19 @@
 package com.tomaskostadinov.instantmail.activity;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        muted = sharedPref.getBoolean("muted", true);
+
         FirebaseMessaging.getInstance().subscribeToTopic("mailing-service");
         FirebaseInstanceId.getInstance().getToken();
         TextView t = (TextView) findViewById(R.id.card_title);
@@ -34,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, FirebaseInstanceId.getInstance().getToken() ,Toast.LENGTH_SHORT).show();
         Toast.makeText(MainActivity.this, text ,Toast.LENGTH_SHORT).show();
 
+        final ImageButton mute = (ImageButton) findViewById(R.id.mute_button);
+
+        if (mute != null) {
+            if (muted) {
+                mute.setImageResource(R.drawable.ic_mute);
+            } else {
+                mute.setImageResource(R.drawable.ic_volume);
+            }
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        final ImageButton mute = (ImageButton) findViewById(R.id.mute_button);
         if (mute != null) {
             mute.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,7 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     if (muted == false){
                         mute.setImageResource(R.drawable.ic_mute);
                         muted  = true;
+                        editor.putBoolean("muted", true);
+                        editor.apply();
+
                     } else {
+                        editor.putBoolean("muted", false);
+                        editor.apply();
                         muted = false;
                         mute.setImageResource(R.drawable.ic_volume);
                     }
@@ -76,6 +102,34 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)){
+
+            Intent i = new Intent(this,MainActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                    .setAutoCancel(true)
+                    .setContentTitle("Sie haben Post!")
+                    .setContentText("Ihr Briefkasten ist voll.")
+                    .setSmallIcon(R.drawable.ic_mail)
+                    .setContentIntent(pendingIntent)
+                    .setSound(Uri.parse("android.resource://"
+                            + getApplication().getPackageName() + "/"
+                            + R.raw.alert))
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    ;
+
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+            manager.notify(0,builder.build());
+        }
         return true;
     }
 
