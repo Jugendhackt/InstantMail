@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("",Context.MODE_PRIVATE);
+
+        //final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
         muted = sharedPref.getBoolean("muted", true);
 
@@ -47,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, FirebaseInstanceId.getInstance().getToken() ,Toast.LENGTH_SHORT).show();
         Toast.makeText(MainActivity.this, text ,Toast.LENGTH_SHORT).show();
 
-
-
-        
         final ImageButton mute = (ImageButton) findViewById(R.id.mute_button);
 
         if (mute != null) {
@@ -85,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             mute.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (muted == false){
+                    if (!muted){
                         mute.setImageResource(R.drawable.ic_mute);
                         muted  = true;
                         editor.putBoolean("muted", true);

@@ -1,8 +1,11 @@
 package com.tomaskostadinov.instantmail.service;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
@@ -23,13 +26,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     private boolean checkMuted(){
-
-        return true;
+        final SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("",Context.MODE_PRIVATE);
+        return sharedPref.getBoolean("muted", false);
     }
-
     private void showNotification(String message) {
         if(checkMuted()){
-
+            return;
         }
         Intent i = new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -45,6 +47,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setSound(Uri.parse("android.resource://"
                                         + getApplication().getPackageName() + "/"
                                         + R.raw.alert))
+
+                .setPriority(Notification.PRIORITY_HIGH)
         ;
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
