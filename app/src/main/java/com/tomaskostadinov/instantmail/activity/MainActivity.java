@@ -47,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this, FirebaseInstanceId.getInstance().getToken() ,Toast.LENGTH_SHORT).show();
         Toast.makeText(MainActivity.this, text ,Toast.LENGTH_SHORT).show();
 
+
+
+        
         final ImageButton mute = (ImageButton) findViewById(R.id.mute_button);
 
         if (mute != null) {
