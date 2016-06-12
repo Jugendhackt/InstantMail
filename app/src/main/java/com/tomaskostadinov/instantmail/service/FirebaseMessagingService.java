@@ -22,8 +22,15 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         showNotification(remoteMessage.getData().get("message"));
     }
 
-    private void showNotification(String message) {
+    private boolean checkMuted(){
 
+        return true;
+    }
+
+    private void showNotification(String message) {
+        if(checkMuted()){
+
+        }
         Intent i = new Intent(this,MainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

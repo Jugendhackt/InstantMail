@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 mute.setImageResource(R.drawable.ic_volume);
             }
         }
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
