@@ -37,8 +37,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         final SharedPreferences sharedPref = getApplicationContext().getSharedPreferences("",Context.MODE_PRIVATE);
-
-        //final SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPref.edit();
         muted = sharedPref.getBoolean("muted", true);
 

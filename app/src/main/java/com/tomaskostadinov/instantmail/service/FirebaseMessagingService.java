@@ -48,8 +48,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                                         + getApplication().getPackageName() + "/"
                                         + R.raw.alert))
 
-                .setPriority(Notification.PRIORITY_HIGH)
-        ;
+                .setPriority(Notification.PRIORITY_HIGH);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
