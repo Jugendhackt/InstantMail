@@ -4,4 +4,4 @@ Have you ever been to lazy to go to your mailbox?
 
 That time is over now! InstantMail is your personal mailbox that sends push notifications whenever you get your post.
 
-#####Open-source project by Tomas Kostadinov, Noah Diemel, Simon Pelz and Paul Goldschmidt.
+##### Open-source project by Tomas Kostadinov, Noah Diemel, Simon Pelz and Paul Goldschmidt.
